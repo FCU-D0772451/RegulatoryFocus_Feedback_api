@@ -172,7 +172,6 @@ def chat_gpt_prevention_pValue(user_name, prompt):
         "role": "user",
         "content": prompt
     })
-
     response = client.chat.completions.create(
         model = "gpt-4o", #gpt-4o
         temperature = 0.89,
@@ -182,7 +181,6 @@ def chat_gpt_prevention_pValue(user_name, prompt):
         presence_penalty = 0,
         messages = current_session
     )
-
     current_session.append({
         "role": "assistant",
         "content": response.choices[0].message.content

@@ -4,20 +4,20 @@ from flask_cors import CORS
 import json 
 from openai import OpenAI
 from scipy.stats import t
+import os
 
 ##OPENAI_API_KEY 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
-
+ 
 app = Flask(__name__)
 CORS(app)
-
-# 请将 YOUR_OPENAI_API_KEY 替换为您的 OpenAI API 密钥
-#client = openai.OpenAI(api_key = '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')
 
 promotion_user_history_correlation  = {}
 prevention_user_history_correlation = {}
 
 def chat_gpt_promotion_correlation(user_name, prompt):
-    client = OpenAI()
+    client = OpenAI(
+        os.environ.get("OPENAI_API_KEY")
+    )
 
     if user_name not in promotion_user_history_correlation:
         promotion_user_history_correlation[user_name] = [
@@ -31,16 +31,13 @@ def chat_gpt_promotion_correlation(user_name, prompt):
                 ]
             },
         ] 
-
     # 獲取用戶當前對話歷史
     current_session = promotion_user_history_correlation[user_name]
-
     # 添加用户的新消息
     current_session.append({
         "role": "user",
         "content": prompt
     })
-
     response = client.chat.completions.create(
         model = "gpt-4o",
         temperature = 0.89,
@@ -50,13 +47,10 @@ def chat_gpt_promotion_correlation(user_name, prompt):
         presence_penalty = 0,
         messages = current_session
     )
-
     current_session.append({
         "role": "assistant",
         "content": response.choices[0].message.content
-    })
-
-      
+    })  
     if len(current_session) > 11:
       # 保留系统消息和最新的9条对话
       promotion_user_history_correlation[user_name] = [current_session[0]] + current_session[-10:]
@@ -65,9 +59,7 @@ def chat_gpt_promotion_correlation(user_name, prompt):
 
 def chat_gpt_prevention_correlation(user_name, prompt):
     client = OpenAI()
-
     #prompt = prevention_prompt_temp + prompt
-
     if user_name not in prevention_user_history_correlation:
         prevention_user_history_correlation[user_name] = [
                 {
@@ -82,13 +74,11 @@ def chat_gpt_prevention_correlation(user_name, prompt):
         ] 
      # 獲取用戶當前對話歷史
     current_session = prevention_user_history_correlation[user_name]
-
     # 添加用户的新消息
     current_session.append({
         "role": "user",
         "content": prompt
     })
-
     response = client.chat.completions.create(
         model = "gpt-4o", #gpt-4-turbo
         temperature = 0.89,
@@ -98,12 +88,10 @@ def chat_gpt_prevention_correlation(user_name, prompt):
         presence_penalty = 0,
         messages = current_session
     )
-
     current_session.append({
         "role": "assistant",
         "content": response.choices[0].message.content
      })
-    
     # 如對話紀錄超過10條（加上系统消息是11），則剪裁對話歷史，保留系统消息和最近的9條消息
     if len(current_session) > 11:
         # 保留系统消息和最近的9條消息
@@ -216,12 +204,6 @@ def index():
         return 'Hello, Vercel with POST!'
     return 'Hello, Vercel!'
 
-@app.route('/hi', methods=['GET', 'POST'])
-def index_hi():
-    if request.method == 'POST':
-        return 'Hello, Vercel with POST!'
-    return 'Hello, Vercel!'
-
 @app.route('/chat_correlation', methods=['GET', 'POST'])
 def feedback_chat():
     data = request.get_json()  # 取得客戶端發送的JSON數據
@@ -268,7 +250,6 @@ def feedback_chat_pValue():
     #print(promotion_user_history_pValue[user_name])
     return jsonify({'response': response_text})
 
-
 @app.route('/ttest', methods=['GET', 'POST'])
 def handle_tvalue():
     data = request.get_json()
@@ -276,12 +257,9 @@ def handle_tvalue():
     n = data['n']
     # 自由度
     df = 2 * (n - 1)
-    
     # 計算t值（雙尾，所以p值除以2）
     t_value = t.ppf(1 - p_value / 2, df)
-    
     return jsonify({'t_value': t_value})
-
 
 if __name__ == '__main__':
     app.run(debug=True) 

@@ -210,7 +210,7 @@ def chat_gpt_prevention_pValue(user_name, prompt):
 
     return response.choices[0].message.content
 
-@app.route('/')
+@app.route('/', methods=['POST'])
 def index():
     return 'Hello, Vercel!'
 

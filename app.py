@@ -216,6 +216,12 @@ def index():
         return 'Hello, Vercel with POST!'
     return 'Hello, Vercel!'
 
+@app.route('/123', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        return 'Hello, Vercel with POST!'
+    return 'Hello, Vercel!'
+
 @app.route('/chat_correlation', methods=['GET', 'POST'])
 def feedback_chat():
     data = request.get_json()  # 取得客戶端發送的JSON數據

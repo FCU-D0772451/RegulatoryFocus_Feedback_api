@@ -1,12 +1,12 @@
 #'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'
-
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json 
-from scipy.stats import norm
 from openai import OpenAI
 from scipy.stats import ttest_ind
 from scipy.stats import t
+
+##OPENAI_API_KEY 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
 
 app = Flask(__name__)
 CORS(app)
@@ -211,6 +211,9 @@ def chat_gpt_prevention_pValue(user_name, prompt):
 
     return response.choices[0].message.content
 
+@app.route('/')
+def index():
+    return 'Hello, Vercel!'
 
 @app.route('/chat_correlation', methods=['POST'])
 def feedback_chat():

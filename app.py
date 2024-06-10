@@ -4,9 +4,6 @@ from flask_cors import CORS
 import json 
 from openai import OpenAI
 from scipy.stats import t
-import os
-
-##OPENAI_API_KEY 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
  
 app = Flask(__name__)
 CORS(app)
@@ -16,7 +13,7 @@ prevention_user_history_correlation = {}
 
 def chat_gpt_promotion_correlation(user_name, prompt):
     client = OpenAI(
-        os.environ.get("OPENAI_API_KEY")
+        OPENAI_API_KEY = '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'
     )
 
     if user_name not in promotion_user_history_correlation:

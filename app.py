@@ -256,6 +256,7 @@ def feedback_chat_pValue():
     response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
     return response
 
+# t檢定
 @app.route('/ttest', methods=['GET', 'POST'])
 def handle_tvalue():
     data = request.get_json()

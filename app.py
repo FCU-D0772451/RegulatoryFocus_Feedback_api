@@ -8,7 +8,7 @@ from scipy.stats import t
 OPENAI_API_KEY = os.environ['OPENAI_API_KEY']#'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'
 
 app = Flask(__name__)
-CORS(app, origins=['*'], supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 promotion_user_history_correlation  = {}
 prevention_user_history_correlation = {}
@@ -195,9 +195,6 @@ def chat_gpt_prevention_pValue(user_name, prompt):
 
     return response.choices[0].message.content
 
-
-CORS(app, origins=['*'], supports_credentials=True)
-
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
@@ -227,9 +224,9 @@ def feedback_chat():
             response_text = "未知的類型"
 
     response = jsonify({'response': response_text})
-    response.headers['Access-Control-Allow-Origin'] = '*'  # 允許所有來源
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST'  # 允許 GET 和 POST 方法
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'  # 允許 Content-Type 和 Authorization 標頭
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
     return response
 
 @app.route('/chat_pValue', methods=['GET', 'POST'])
@@ -254,9 +251,9 @@ def feedback_chat_pValue():
             response_text = "未知的類型"
 
     response = jsonify({'response': response_text})
-    response.headers['Access-Control-Allow-Origin'] = '*'  # 允許所有來源
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST'  # 允許 GET 和 POST 方法
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'  # 允許 Content-Type 和 Authorization 標頭
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
     return response
 
 @app.route('/ttest', methods=['GET', 'POST'])
@@ -270,9 +267,9 @@ def handle_tvalue():
     t_value = t.ppf(1 - p_value / 2, df)
     
     response = jsonify({'t_value': t_value})
-    response.headers['Access-Control-Allow-Origin'] = '*'  # 允許所有來源
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST'  # 允許 GET 和 POST 方法
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'  # 允許 Content-Type 和 Authorization 標頭
+    response.headers.add('Access-Control-Allow-Origin', '*')
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
     return response
 
 if __name__ == '__main__':

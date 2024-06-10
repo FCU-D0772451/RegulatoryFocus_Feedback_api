@@ -216,7 +216,7 @@ def index():
         return 'Hello, Vercel with POST!'
     return 'Hello, Vercel!'
 
-@app.route('/chat_correlation', methods=['POST'])
+@app.route('/chat_correlation', methods=['GET', 'POST'])
 def feedback_chat():
     data = request.get_json()  # 取得客戶端發送的JSON數據
     user_answer = data.get('prompt')  # 取得使用者的輸入
@@ -239,7 +239,7 @@ def feedback_chat():
     #print(prevention_user_history[user_name])
     return jsonify({'response': response_text})
 
-@app.route('/chat_pValue', methods=['POST'])
+@app.route('/chat_pValue', methods=['GET', 'POST'])
 def feedback_chat_pValue():
     data = request.get_json()  # 取得客戶端發送的JSON數據
     user_answer = data.get('prompt')  # 取得使用者的輸入
@@ -263,7 +263,7 @@ def feedback_chat_pValue():
     return jsonify({'response': response_text})
 
 
-@app.route('/ttest', methods=['POST'])
+@app.route('/ttest', methods=['GET', 'POST'])
 def handle_tvalue():
     data = request.get_json()
     p_value = data['p_value']

@@ -1,4 +1,3 @@
-#'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'
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json 
@@ -9,8 +8,7 @@ from scipy.stats import t
 OPENAI_API_KEY = os.environ['OPENAI_API_KEY']#'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'
 
 app = Flask(__name__)
-CORS(app)
-
+CORS(app, origins=['*'])
 
 promotion_user_history_correlation  = {}
 prevention_user_history_correlation = {}

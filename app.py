@@ -217,7 +217,7 @@ def index():
     return 'Hello, Vercel!'
 
 @app.route('/hi', methods=['GET', 'POST'])
-def index():
+def index_hi():
     if request.method == 'POST':
         return 'Hello, Vercel with POST!'
     return 'Hello, Vercel!'

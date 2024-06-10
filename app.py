@@ -4,6 +4,7 @@ from flask_cors import CORS
 import json 
 from openai import OpenAI
 from scipy.stats import t
+import os
 
 ##OPENAI_API_KEY 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
  

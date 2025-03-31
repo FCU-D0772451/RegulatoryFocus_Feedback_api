@@ -6,7 +6,8 @@
         "use": "@vercel/python",
         "config": {
           "maxLambdaSize": "15mb",
-          "includeFiles": ["*.py", "requirements.txt"]
+          "includeFiles": ["*.py", "requirements.txt"],
+          "forceDeploy": true
         }
       }
     ],
